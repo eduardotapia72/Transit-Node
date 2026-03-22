@@ -4,6 +4,14 @@ contextBridge.exposeInMainWorld('electronAPI', {
   setTheme: (theme) => ipcRenderer.send('update-theme', theme)
 })
 
+contextBridge.exposeInMainWorld('dbAPI', {
+  savePlate: (data) => ipcRenderer.invoke('db:savePlate', data),
+  getRecentPlates: (limit, offset, search, region) => ipcRenderer.invoke('db:getRecentPlates', limit, offset, search, region),
+  searchPlate: (plateNumber) => ipcRenderer.invoke('db:searchPlate', plateNumber),
+  decryptImage: (filePath) => ipcRenderer.invoke('db:decryptImage', filePath),
+  getTotalPlates: (search, region) => ipcRenderer.invoke('db:getTotalPlates', search, region)
+})
+
 window.addEventListener('DOMContentLoaded', () => {
   const replaceText = (selector, text) => {
     const element = document.getElementById(selector)

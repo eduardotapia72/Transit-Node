@@ -7,7 +7,6 @@ import DetectionSystem from './views/DetectionSystem';
 import Database from './views/Database';
 
 export default function App() {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [isSettingsOpen, setSettingsOpen] = useState(false);
   
   // Theme management: light / dark
@@ -23,7 +22,6 @@ export default function App() {
     }
   }, [theme]);
 
-  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
   const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
 
   return (
@@ -32,15 +30,13 @@ export default function App() {
         {/* Barra superior de Electron gestionada por React */}
         <Titlebar />
 
-        {/* Sidebar */}
+        {/* Sidebar Mini Permanente */}
         <Sidebar 
-          isOpen={isSidebarOpen} 
-          toggleSidebar={toggleSidebar} 
           openSettings={() => setSettingsOpen(true)}
         />
 
         {/* Main Workspace Minimalist */}
-        <main style={{ flex: 1, paddingRight: '20px', paddingBottom: '20px', display: 'flex' }}>
+        <main style={{ flex: 1, minWidth: 0, paddingRight: '20px', paddingBottom: '20px', display: 'flex' }}>
           {/* Ya no usamos neo-inset aquí, dejamos que fluya sobre el fondo minimalista */}
           <div style={{ flex: 1, borderRadius: '24px', overflow: 'hidden', display: 'flex' }}>
             <Routes>

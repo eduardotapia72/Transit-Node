@@ -20,6 +20,8 @@ const createWindow = () => {
     }
   })
 
+const db = require('./backend/db/database.js')
+
   // Escuchar el cambio de tema desde React y cambiar color de los botones (TitleBar)
   ipcMain.on('update-theme', (event, theme) => {
     if (theme === 'dark') {
@@ -34,6 +36,17 @@ const createWindow = () => {
       })
     }
   })
+
+  // Conectar Backend con Frontend
+  ipcMain.handle('db:getRecentPlates', (event, limit, offset, search, region) => db.getRecentPlates(limit, offset, search, region));
+  ipcMain.handle('db:savePlate', (event, data) => db.savePlateRecord(data));
+  ipcMain.handle('db:searchPlate', (event, plateNumber) => db.searchPlate(plateNumber));
+  ipcMain.handle('db:getTotalPlates', (event, search, region) => db.getTotalPlates(search, region));
+  
+  // Ojo: cryptoService lo podemos importar directo aquí si hiciera falta.
+  // Por ahora lo maneja database.js internamente para guardado, pero si
+  // ocupas decryptImage() directo en frontend, tocará hacer require del cryptoService!
+
 
   // Si estamos en entorno de desarrollo, cargamos el servidor de Vite
   if (process.env.NODE_ENV === 'development') {
